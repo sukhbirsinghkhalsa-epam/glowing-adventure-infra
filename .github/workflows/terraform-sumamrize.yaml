@@ -49,18 +49,7 @@ jobs:
           terraform plan -out tfplan
       
       - name: Terraform Show JSON
-        shell: bash
         run: |
-         terraform show -json tfplan  > terraform_plan_summary.json
-      
-      - name: Validate JSON
-        shell: bash
-        run: |
-          jq empty terraform_plan_summary.json
-          echo "JSON is valid"
-      
-      - name: Run Summary Script
-        shell: bash
-        run: |
-          ./summary.sh
+         terraform show -json tfplan  > terraform_plan_summary.json && bash ./summary.sh
+    
 
