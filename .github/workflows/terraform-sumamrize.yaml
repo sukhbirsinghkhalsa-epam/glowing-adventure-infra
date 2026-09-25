@@ -45,8 +45,7 @@ jobs:
       - name: Terraform Plan
         working-directory: environment
         run: |
-          terraform plan \
-            -out="${{ github.workspace }}/.github/script/tfplan"
+          terraform plan -out tfplan
       
       - name: Terraform Show JSON
         working-directory: environment
