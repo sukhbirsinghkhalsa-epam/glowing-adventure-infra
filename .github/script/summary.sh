@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE="./temp1.json"
+FILE="./terraform_plan_summary.json"
 
 # Check if jq is installed
 if ! command -v jq >/dev/null 2>&1; then
