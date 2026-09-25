@@ -60,6 +60,12 @@ jobs:
         run: |
           chmod +x summary.sh
           sed -i 's/\r$//' summary.sh
+      
+      - name: Validate JSON
+        run: |
+              jq empty terraform_plan_summary.json
+              echo $?
+              xxd -l 20 terraform_plan_summary.json
 
       - name: Run Summary Script
         working-directory: .github/script
