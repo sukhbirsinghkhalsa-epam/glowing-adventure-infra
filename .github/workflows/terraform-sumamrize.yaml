@@ -44,54 +44,85 @@ jobs:
 
       - name: Terraform Plan
         working-directory: environment
-        run: terraform plan -out="${{ github.workspace }}/.github/script/tfplan"
-        
+        run: |
+          terraform plan \
+            -out="${{ github.workspace }}/.github/script/tfplan"
+      
       - name: Terraform Show JSON
         working-directory: environment
+        shell: bash
         run: |
-          terraform show -json "${{ github.workspace }}/.github/script/tfplan" \
+          terraform_json="$(terraform show -json "${{ github.workspace }}/.github/script/tfplan")"
+          printf '%s\n' "$terraform_json" \
             > "${{ github.workspace }}/.github/script/terraform_plan_summary.json"
-
-          sed -i 's/%0A$//' "${{ github.workspace }}/.github/script/terraform_plan_summary.json"
-
-      - name: Display Json
-        working-directory: .github/script
-        run: |
-          cat terraform_plan_summary.json
-          
-      - name: Give Required Permission & convert to bash based script
-        working-directory: .github/script
-        run: |
-          chmod +x summary.sh
-          sed -i 's/\r$//' summary.sh
-
-      - name: Debug JSON
-        working-directory: .github/script
-        run: |
-          echo "=== SIZE ==="
-          wc -c terraform_plan_summary.json
-      
-          echo "=== FIRST 200 CHARACTERS ==="
-          head -c 200 terraform_plan_summary.json
-          echo
-      
-          echo "=== FIRST 100 BYTES ==="
-          head -c 100 terraform_plan_summary.json | xxd
-      
-          echo "=== LAST 100 BYTES ==="
-          tail -c 100 terraform_plan_summary.json | xxd
-      
-          echo "=== JSON VALIDATION ==="
-          jq empty terraform_plan_summary.json
       
       - name: Validate JSON
         working-directory: .github/script
+        shell: bash
         run: |
-          wc -c terraform_plan_summary.json
-          tail -c 500 terraform_plan_summary.json
           jq empty terraform_plan_summary.json
-
+          echo "JSON is valid"
+      
       - name: Run Summary Script
         working-directory: .github/script
+        shell: bash
         run: |
+          sed -i 's/\r$//' summary.sh
+          chmod +x summary.sh
           ./summary.sh
+
+
+
+      # - name: Terraform Plan
+      #   working-directory: environment
+      #   run: terraform plan -out="${{ github.workspace }}/.github/script/tfplan"
+        
+      # - name: Terraform Show JSON
+      #   working-directory: environment
+      #   run: |
+      #     terraform show -json "${{ github.workspace }}/.github/script/tfplan" \
+      #       > "${{ github.workspace }}/.github/script/terraform_plan_summary.json"
+
+      #     sed -i 's/%0A$//' "${{ github.workspace }}/.github/script/terraform_plan_summary.json"
+
+      # - name: Display Json
+      #   working-directory: .github/script
+      #   run: |
+      #     cat terraform_plan_summary.json
+          
+      # - name: Give Required Permission & convert to bash based script
+      #   working-directory: .github/script
+      #   run: |
+      #     chmod +x summary.sh
+      #     sed -i 's/\r$//' summary.sh
+
+      # - name: Debug JSON
+      #   working-directory: .github/script
+      #   run: |
+      #     echo "=== SIZE ==="
+      #     wc -c terraform_plan_summary.json
+      
+      #     echo "=== FIRST 200 CHARACTERS ==="
+      #     head -c 200 terraform_plan_summary.json
+      #     echo
+      
+      #     echo "=== FIRST 100 BYTES ==="
+      #     head -c 100 terraform_plan_summary.json | xxd
+      
+      #     echo "=== LAST 100 BYTES ==="
+      #     tail -c 100 terraform_plan_summary.json | xxd
+      
+      #     echo "=== JSON VALIDATION ==="
+      #     jq empty terraform_plan_summary.json
+      
+      # - name: Validate JSON
+      #   working-directory: .github/script
+      #   run: |
+      #     wc -c terraform_plan_summary.json
+      #     tail -c 500 terraform_plan_summary.json
+      #     jq empty terraform_plan_summary.json
+
+      # - name: Run Summary Script
+      #   working-directory: .github/script
+      #   run: |
+      #     ./summary.sh
