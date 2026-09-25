@@ -48,8 +48,12 @@ jobs:
         run: |
           terraform plan -out tfplan
       
+      - name: Terraform Plan
+        run: |
+        
+      
       - name: Terraform Show JSON
         run: |
-         terraform show -json tfplan  > terraform_plan_summary.json && bash ./summary.sh
+         terraform show -json tfplan  > terraform_plan_summary.json && cat terraform_plan_summary.json &&  bash ./summary.sh
     
 
