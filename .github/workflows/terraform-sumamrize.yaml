@@ -54,6 +54,18 @@ jobs:
       
       - name: Terraform Show JSON
         run: |
-         terraform show -json tfplan  > terraform_plan_summary.json && cat terraform_plan_summary.json &&  bash ./summary.sh
+          terraform show -json tfplan > terraform_plan_summary.json
+          status=$?
+          
+          echo "terraform show exit code: $status"
+          echo "file size: $(wc -c < terraform_plan_summary.json) bytes"
+          
+          if [ "$status" -ne 0 ]; then
+            exit "$status"
+          fi
+          
+          jq empty terraform_plan_summary.json
+                   
+         # > terraform_plan_summary.json && cat terraform_plan_summary.json &&  bash ./summary.sh
     
 
