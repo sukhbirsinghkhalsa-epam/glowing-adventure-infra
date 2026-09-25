@@ -62,6 +62,7 @@ jobs:
           sed -i 's/\r$//' summary.sh
       
       - name: Validate JSON
+        working-directory: .github/script
         run: |
               jq empty terraform_plan_summary.json
               echo $?
