@@ -64,6 +64,25 @@ jobs:
         run: |
           chmod +x summary.sh
           sed -i 's/\r$//' summary.sh
+
+      - name: Debug JSON
+        working-directory: .github/script
+        run: |
+          echo "=== SIZE ==="
+          wc -c terraform_plan_summary.json
+      
+          echo "=== FIRST 200 CHARACTERS ==="
+          head -c 200 terraform_plan_summary.json
+          echo
+      
+          echo "=== FIRST 100 BYTES ==="
+          head -c 100 terraform_plan_summary.json | xxd
+      
+          echo "=== LAST 100 BYTES ==="
+          tail -c 100 terraform_plan_summary.json | xxd
+      
+          echo "=== JSON VALIDATION ==="
+          jq empty terraform_plan_summary.json
       
       - name: Validate JSON
         working-directory: .github/script
