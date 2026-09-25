@@ -52,7 +52,7 @@ jobs:
         working-directory: environment
         shell: bash
         run: |
-         terraform show -json tfplan  > ../../.github/script/terraform_plan_summary.json
+         terraform show -json tfplan  > ../.github/script/terraform_plan_summary.json
       
       - name: Validate JSON
         working-directory: .github/script
