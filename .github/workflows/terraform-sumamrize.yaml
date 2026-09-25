@@ -55,8 +55,13 @@ jobs:
         run: |
           cat terraform_plan_summary.json
           
-      - name: Run Summary Script
+      - name: Give Required Permission & convert to bash based script
         working-directory: .github/script
         run: |
           chmod +x summary.sh
+          sed -i 's/\r$//' summary.sh
+
+      - name: Run Summary Script
+        working-directory: .github/script
+        run: |
           ./summary.sh
