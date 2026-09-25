@@ -64,9 +64,9 @@ jobs:
       - name: Validate JSON
         working-directory: .github/script
         run: |
-              jq empty terraform_plan_summary.json
-              echo $?
-              xxd -l 20 terraform_plan_summary.json
+          wc -c terraform_plan_summary.json
+          tail -c 500 terraform_plan_summary.json
+          jq empty terraform_plan_summary.json
 
       - name: Run Summary Script
         working-directory: .github/script
