@@ -50,6 +50,11 @@ jobs:
         working-directory: environment
         run: terraform show -json "${{ github.workspace }}/.github/script/tfplan" > "${{ github.workspace }}/.github/script/terraform_plan_summary.json"
 
+      - name: Display Json
+        working-directory: .github/script
+        run: |
+          cat terraform_plan_summary.json
+          
       - name: Run Summary Script
         working-directory: .github/script
         run: |
