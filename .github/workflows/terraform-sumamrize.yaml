@@ -38,8 +38,8 @@ jobs:
               "tenantId": "${{ env.ARM_TENANT_ID }}"
             }
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2.0.3
+      # - name: Setup Terraform
+      #   uses: hashicorp/setup-terraform@v2.0.3
 
       - name: Terraform Init
         run: terraform init
