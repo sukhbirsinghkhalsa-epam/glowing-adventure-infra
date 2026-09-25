@@ -45,10 +45,14 @@ jobs:
       - name: Terraform Plan
         working-directory: environment
         run: terraform plan -out="${{ github.workspace }}/.github/script/tfplan"
-
+        
       - name: Terraform Show JSON
         working-directory: environment
-        run: terraform show -json "${{ github.workspace }}/.github/script/tfplan" > "${{ github.workspace }}/.github/script/terraform_plan_summary.json"
+        run: |
+          terraform show -json "${{ github.workspace }}/.github/script/tfplan" \
+            > "${{ github.workspace }}/.github/script/terraform_plan_summary.json"
+
+          sed -i 's/%0A$//' "${{ github.workspace }}/.github/script/terraform_plan_summary.json"
 
       - name: Display Json
         working-directory: .github/script
