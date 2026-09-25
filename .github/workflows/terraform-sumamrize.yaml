@@ -50,21 +50,17 @@ jobs:
       
       - name: Generate Terraform JSON
         run: |
-          terraform show -json tfplan > terraform_plan_summary.json
-      
-          echo "Terraform JSON size:"
-          wc -c terraform_plan_summary.json
-      
-          echo "Validating JSON:"
+          terraform show -json tfplan | jq '.' > terraform_plan_summary.json
           jq empty terraform_plan_summary.json
+
+      
+      - name: show content
+        run: |
+          cat terraform_plan_summary.json
+      
       
       - name: Run Terraform summary
         run: |
           bash ./summary.sh
       
-      - name: Upload Terraform JSON
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: terraform-plan-json
-          path: environment/terraform_plan_summary.json
+
