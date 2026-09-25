@@ -67,4 +67,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: terraform-plan-json
-          path: terraform_plan_summary.json
+          path: environment/terraform_plan_summary.json
