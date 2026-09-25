@@ -38,8 +38,8 @@ jobs:
               "tenantId": "${{ env.ARM_TENANT_ID }}"
             }
 
-      # - name: Setup Terraform
-      #   uses: hashicorp/setup-terraform@v2.0.3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.3
 
       - name: Terraform Init
         run: terraform init
@@ -54,18 +54,19 @@ jobs:
       
       - name: Terraform Show JSON
         run: |
-          terraform show -json tfplan > terraform_plan_summary.json
-          status=$?
+          terraform show -json tfplan 
+         #  > terraform_plan_summary.json
+         #  status=$?
           
-          echo "terraform show exit code: $status"
-          echo "file size: $(wc -c < terraform_plan_summary.json) bytes"
+         #  echo "terraform show exit code: $status"
+         #  echo "file size: $(wc -c < terraform_plan_summary.json) bytes"
           
-          if [ "$status" -ne 0 ]; then
-            exit "$status"
-          fi
+         #  if [ "$status" -ne 0 ]; then
+         #    exit "$status"
+         #  fi
           
-          jq empty terraform_plan_summary.json
+         #  jq empty terraform_plan_summary.json
                    
-         # > terraform_plan_summary.json && cat terraform_plan_summary.json &&  bash ./summary.sh
+         # # > terraform_plan_summary.json && cat terraform_plan_summary.json &&  bash ./summary.sh
     
 
